@@ -2,4 +2,4 @@
 
 #### Powershell Deobfuscation.
 
-https://github.com/Malandrone/PowerDecode
+- https://github.com/Malandrone/PowerDecode
