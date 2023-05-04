@@ -1,26 +1,62 @@
-mappings = { 0x04:"A",  0x05:"B",  0x06:"C", 0x07:"D", 0x08:"E", 0x09:"F", 0x0A:"G",  0x0B:"H", 0x0C:"I",  0x0D:"J", 0x0E:"K", 0x0F:"L", 0x10:"M", 0x11:"N",0x12:"O",  0x13:"P", 0x14:"Q", 0x15:"R", 0x16:"S", 0x17:"T", 0x18:"U",0x19:"V", 0x1A:"W", 0x1B:"X", 0x1C:"Y", 0x1D:"Z", 0x1E:"1", 0x1F:"2", 0x20:"3", 0x21:"4", 0x22:"5",  0x23:"6", 0x24:"7", 0x25:"8", 0x26:"9", 0x27:"0", 0x28:"n", 0x2a:"[DEL]",  0X2B:"    ", 0x2C:" ",  0x2D:"-", 0x2E:"=", 0x2F:"[",  0x30:"]",  0x31:"\\", 0x32:"~", 0x33:";",  0x34:"'", 0x36:",",  0x37:"." }
+#!/usr/bin/env python
 
-nums = []
+import sys
+import os
 
-keys = open('usbdata.txt')
-# tshark -r example.pcap -T fields -e usb.capdata > usbdata.txt
+DataFileName = "usb.dat"
 
-for line in keys:
+presses = []
 
-    if line[:2] != '00' or line[4:6] != '00':
-        nums.append(int(line[4:6],16))
-    # 00:00:xx:....
+normalKeys = {"04":"a", "05":"b", "06":"c", "07":"d", "08":"e", "09":"f", "0a":"g", "0b":"h", "0c":"i", "0d":"j", "0e":"k", "0f":"l", "10":"m", "11":"n", "12":"o", "13":"p", "14":"q", "15":"r", "16":"s", "17":"t", "18":"u", "19":"v", "1a":"w", "1b":"x", "1c":"y", "1d":"z","1e":"1", "1f":"2", "20":"3", "21":"4", "22":"5", "23":"6","24":"7","25":"8","26":"9","27":"0","28":"<RET>","29":"<ESC>","2a":"<DEL>", "2b":"\t","2c":"<SPACE>","2d":"-","2e":"=","2f":"[","30":"]","31":"\\","32":"<NON>","33":";","34":"'","35":"<GA>","36":",","37":".","38":"/","39":"<CAP>","3a":"<F1>","3b":"<F2>", "3c":"<F3>","3d":"<F4>","3e":"<F5>","3f":"<F6>","40":"<F7>","41":"<F8>","42":"<F9>","43":"<F10>","44":"<F11>","45":"<F12>"}
 
-keys.close()
+shiftKeys = {"04":"A", "05":"B", "06":"C", "07":"D", "08":"E", "09":"F", "0a":"G", "0b":"H", "0c":"I", "0d":"J", "0e":"K", "0f":"L", "10":"M", "11":"N", "12":"O", "13":"P", "14":"Q", "15":"R", "16":"S", "17":"T", "18":"U", "19":"V", "1a":"W", "1b":"X", "1c":"Y", "1d":"Z","1e":"!", "1f":"@", "20":"#", "21":"$", "22":"%", "23":"^","24":"&","25":"*","26":"(","27":")","28":"<RET>","29":"<ESC>","2a":"<DEL>", "2b":"\t","2c":"<SPACE>","2d":"_","2e":"+","2f":"{","30":"}","31":"|","32":"<NON>","33":"\"","34":":","35":"<GA>","36":"<","37":">","38":"?","39":"<CAP>","3a":"<F1>","3b":"<F2>", "3c":"<F3>","3d":"<F4>","3e":"<F5>","3f":"<F6>","40":"<F7>","41":"<F8>","42":"<F9>","43":"<F10>","44":"<F11>","45":"<F12>"}
 
-output = ""
+def main():
+    # check argv
+    if len(sys.argv) != 2:
+        print("Usage : ")
+        print("        python UsbKeyboardHacker.py data.pcap")
+        print("Tips : ")
+        print("        To use this python script , you must install the tshark first.")
+        print("        You can use `sudo apt-get install tshark` to install it")
+        print("Author : ")
+        print("        WangYihang <wangyihanger@gmail.com>")
+        print("        If you have any questions , please contact me by email.")
+        print("        Thank you for using.")
+        exit(1)
 
-for n in nums:
-    if n == 0:
-        continue
-    if n in mappings:
-        output += mappings[n]
-    else:
-        output += '[unknown]'
+    # get argv
+    pcapFilePath = sys.argv[1]
 
-print('output:' + output)
+    # get data of pcap
+    os.system("tshark -r %s -T fields -e usb.capdata 'usb.data_len == 8' > %s" % (pcapFilePath, DataFileName))
+
+    # read data
+    with open(DataFileName, "r") as f:
+        for line in f:
+            presses.append(line[0:-1])
+    # handle
+    result = ""
+    for press in presses:
+        if press == '':
+            continue
+        if ':' in press:
+            Bytes = press.split(":")
+        else:
+            Bytes = [press[i:i+2] for i in range(0, len(press), 2)]
+        if Bytes[0] == "00":
+            if Bytes[2] != "00" and normalKeys.get(Bytes[2]):
+                result += normalKeys[Bytes[2]]
+        elif int(Bytes[0],16) & 0b10 or int(Bytes[0],16) & 0b100000: # shift key is pressed.
+            if Bytes[2] != "00" and normalKeys.get(Bytes[2]):
+                result += shiftKeys[Bytes[2]]
+        else:
+            print("[-] Unknow Key : %s" % (Bytes[0]))
+    print("[+] Found : %s" % (result))
+
+    # clean the temp data
+    os.system("rm ./%s" % (DataFileName))
+
+
+if __name__ == "__main__":
+    main()
