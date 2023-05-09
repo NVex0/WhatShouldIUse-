@@ -1,1 +1,1 @@
-Code đi copy thôi, code ngu bỏ mẹ :v
+Tự code đc r, code mấy thằng tàu gà vl
