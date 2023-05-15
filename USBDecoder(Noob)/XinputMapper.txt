@@ -1,0 +1,2 @@
+#Map của xinput.
+https://github.com/Wh1t3Rh1n0/xinput-keylog-decoder/blob/master/config/cfg_mod_list.py
