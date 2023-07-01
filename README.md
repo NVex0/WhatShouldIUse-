@@ -1,6 +1,6 @@
 ## Tool Collection
 
-#### Powershell Deobfuscation.
+### Powershell Deobfuscation.
 
 - https://github.com/Malandrone/PowerDecode
 
