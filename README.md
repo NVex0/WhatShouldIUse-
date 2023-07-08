@@ -34,7 +34,7 @@ Xor key: `7d895223d2bcddeaa3b91f`
     ```
     git clone https://github.com/zrax/pycdc
     cd pycdc
-    cmake .
+    cmake CMakeLists.txt
     make
-    make check
-    python pycdc C:\Users\Bobby\example.pyc```
+    ./pycdc example.pyc
+    ```
