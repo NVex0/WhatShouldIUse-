@@ -38,3 +38,49 @@ Xor key: `7d895223d2bcddeaa3b91f`
     make
     ./pycdc example.pyc
     ```
+
+### VB Deobfuscate:
+- Deob kí tự đặc biệt:
+```
+chars = list(map(lambda x: bytes([x]), set(open('out.txt', 'rb').read())))
+specialChars = set(['\x00', b'\x80', b'\x81', b'\x82', b'\x83', b'\x84', b'\x85', b'\x92', b'\x93', b'\x94', b'\x95', b'\x96', b'\x98', b'\x99', b'\x9a', b'\x9b', b'\x9c', b'\xa0', b'\xa1', b'\xa2', b'\xa3', b'\xa4', b'\xa5', b'\xa6', b'\xa7', b'\xa8', b'\xa9', b'\xaa', b'\xab', b'\xac', b'\xae', b'\xaf', b'\xb0', b'\xb2', b'\xb3', b'\xb4', b'\xb5', b'\xb6', b'\xb7', b'\xb8', b'\xb9', b'\xba', b'\xbb', b'\xbc', b'\xbd', b'\xbe', b'\xbf', b'\xc2', b'\xc3', b'\xef'])
+out = open('dumped.txt', 'rb').read()
+
+curr = b''
+specialCharSet = set()
+specialCharSetInOQ = set()
+
+for i in range(len(out)):
+    b = out[i]
+    if bytes([b]) in specialChars:
+        curr += bytes([b])
+    elif len(curr):
+        specialCharSet.add(curr)
+        curr = b''
+
+specialCharList = list(specialCharSet)
+specialCharList.sort(key=lambda x: len(x), reverse=True)
+
+openQuote = False
+for k in range(len(specialCharList)):
+    sc = specialCharList[k]
+    found = True
+    while found:
+        found = False
+        curr = b''
+        for i in range(len(out)):
+            b = out[i]
+            if bytes([b]) in specialChars:
+                curr += bytes([b])
+            elif len(curr):
+                if not openQuote and sc == curr:
+                    out = out[:i - len(curr)] + out[i - len(curr):].replace(curr, f'a{str(k)}'.encode('utf-8'), 1)
+                    found = True
+                    # print(i, out[i:i+100])
+                    break
+                curr = b''
+            if b == 34:
+                openQuote = not openQuote
+
+open('formatted1.txt', 'wb').write(bytes(out))
+```
