@@ -3,6 +3,7 @@
 ### Powershell Deobfuscation.
 
 - https://github.com/Malandrone/PowerDecode
+- https://github.com/R3MRUM/PSDecode
 
 ### Zip Known-Plain-Attack:
 
