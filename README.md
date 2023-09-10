@@ -30,7 +30,7 @@ Xor key: `7d895223d2bcddeaa3b91f`
     
   + Step 2: Uncompile file pyc của mang tên con exe gốc, dùng `Uncompyle6` - Python3.6.
 
-- Cho Py 3.10 :
+- Cho Py 3.10++ :
   + `https://github.com/zrax/pycdc`
     ```
     git clone https://github.com/zrax/pycdc
