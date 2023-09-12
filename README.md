@@ -1,6 +1,6 @@
 ## Tool Collection
 
-### Powershell Deobfuscation.
+### Powershell Deobfuscation:
 
 - https://github.com/Malandrone/PowerDecode
 - https://github.com/R3MRUM/PSDecode
@@ -85,3 +85,6 @@ for k in range(len(specialCharList)):
 
 open('formatted1.txt', 'wb').write(bytes(out))
 ```
+### Batch Deobfuscate:
+
+- https://github.com/DissectMalware/batch_deobfuscator
