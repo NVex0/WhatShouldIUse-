@@ -88,3 +88,9 @@ open('formatted1.txt', 'wb').write(bytes(out))
 ### Batch Deobfuscate:
 
 - https://github.com/DissectMalware/batch_deobfuscator
+
+### OSINT lỏ.
+
+- Overview: https://osintframework.com/
+
+- "Harvesttttttt": https://github.com/laramies/theHarvester
