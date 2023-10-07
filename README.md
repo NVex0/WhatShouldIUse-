@@ -94,3 +94,9 @@ open('formatted1.txt', 'wb').write(bytes(out))
 - Overview: https://osintframework.com/
 
 - "Harvesttttttt": https://github.com/laramies/theHarvester
+
+### PE Unmapper.
+
+- https://github.com/hasherezade/pe_unmapper
+
+PE sau khi lấy ra bằng Windbg(lm -> `db địa_chỉ_start L Length` hoặc `.writemem FileName BaseAddress EndAddress`). Thì dùng tool này để unmap địa chỉ lấy binary sạch :>
