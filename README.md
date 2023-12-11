@@ -100,3 +100,7 @@ open('formatted1.txt', 'wb').write(bytes(out))
 - https://github.com/hasherezade/pe_unmapper
 
   PE sau khi lấy ra bằng Windbg(lm -> `db địa_chỉ_start L Length` hoặc `.writemem FileName BaseAddress EndAddress`). Thì dùng tool này để unmap địa chỉ lấy binary sạch :>
+
+### Emulator cho shellcode (Run, call windows API,... nói chung là cho emu động luôn thay vì mình ngồi phân tích tĩnh):
+
+- https://github.com/mandiant/speakeasy#adding-api-handlers
