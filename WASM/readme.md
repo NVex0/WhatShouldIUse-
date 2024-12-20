@@ -11,3 +11,8 @@ cd build
 cmake ..
 cmake --build .
 ```
+hoặc 
+`sudo apt install wabt`
+
+Run: bin/wasm2wat <file> -o <outfile>
+
